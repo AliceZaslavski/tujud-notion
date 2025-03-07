@@ -1,0 +1,31 @@
+name: Update Notion Mood Colors
+
+on:
+  workflow_dispatch:  # Võimaldab käsitsi käivitamist
+
+jobs:
+  update-moods:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Klooni repositoorium
+        uses: actions/checkout@v3
+
+      - name: Paigalda Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Paigalda sõltuvused
+        run: pip install requests notion-client
+
+      - name: Kontrollime, kas skript üldse töötab
+        run: |
+          echo "🚀 Skript peaks kohe käivituma!"
+          ls -la
+          pwd
+
+      - name: Käivita Notion skript
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: python notion_mood_tracker.py
